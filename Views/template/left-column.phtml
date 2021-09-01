@@ -1,0 +1,56 @@
+<div id="left-col-container">
+    <div onclick="document.getElementById('new-message').style.display='block' "class="white-back">
+        <p align="center">New Message</p>
+    </div>
+
+<?php
+    $q='SELECT DISTINCT message_reciever, message_sender FROM messages WHERE message_sender = "'.$_SESSION['username'].'"
+    OR message_reciever = "'.$_SESSION['username'].'"';
+    $r = mysqli_query($conn, $q);
+    if($r){
+        if(mysqli_num_rows($r)>0){
+            $counter = 0;
+            $added_user = array();
+            while($row=mysqli_fetch_assoc($r)){
+                $message_sender=$row['message_sender'];
+                $message_reciever=$row['message_reciever'];
+                if($_SESSION['username']==$message_sender) {
+                    //add the reciever but only once
+                    if(in_array($message_reciever, $added_user)) {
+                        //dont add reciever, already added
+                    } else {
+                    ?>
+                        <div class="grey-back">
+                            <img src="images/profile.jpg" class="image"/>
+                            <?php echo '<a href="?user='.$message_reciever.'">'.$message_reciever.'</a>'; ?>
+                        </div>
+                    <?php
+                        $added_user = array($counter => $message_reciever);
+                        $counter++ ;
+                    }
+
+                }elseif($_SESSION['username']==$message_reciever) {
+                    //add the sender but only once
+                    if(in_array($message_sender, $added_user)) {
+                        //dont add sender, already added
+                    } else {
+                        ?>
+                        <div class="grey-back">
+                            <img src="images/profile.jpg" class="image"/>
+                            <?php echo '<a href="?user='.$message_sender.'">'.$message_sender.'</a>'; ?>
+                        </div>
+                        <?php
+                        $added_user = array($counter => $message_sender);
+                        $counter++ ;
+                    }
+                }
+            }
+        }else{
+            echo 'no user';
+        }
+    }
+?>
+
+
+
+</div>

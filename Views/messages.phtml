@@ -1,0 +1,85 @@
+<?php require('template/header.phtml') ?>
+
+<?php require_once('template/new-message.phtml') ?>
+
+<script>
+    let currentUser = "";
+    let first = true;
+
+    function loadMessages(parent) {
+        document.getElementById("message_text").style.display = "block";
+        document.getElementById("messageButton").style.display = "block";
+        let username = parent.id;
+        let messageContainer = document.getElementById("messages-container");
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "../Controllers/getMessages.php?username=" + username, true);
+
+        xhr.onload = function() {
+            let messages = JSON.parse(this.responseText);
+            let messageString = "";
+            for(let message in messages) {
+                if(messages[message][1] == "<?=$_SESSION["username"]?>") {
+                    messageString += "<div class='white-message'>" +
+                        "<a href='#'><?=$_SESSION["username"]?></a>" +
+                        "<p>" + messages[message][2] + "</p>" +
+                        "</div>";
+                } else {
+                    messageString += "<div class='grey-message'>" +
+                        "<a href='#'>" + messages[message][1] + "</a>" +
+                        "<p>" + messages[message][2] + "</p>" +
+                        "</div>";
+                }
+            }
+
+            messageContainer.innerHTML = messageString;
+        }
+
+        xhr.send();
+
+        if(first) {
+            first = false;
+            currentUser = parent.id;
+            autoRefresh();
+        }
+    }
+
+    function autoRefresh() {
+        loadMessages(document.getElementById("" + currentUser));
+        setTimeout(autoRefresh, 3000);
+    }
+
+</script>
+
+    <div id="messaging">
+        <div id="top-menu">
+            <?php echo $_SESSION['username'] ?>
+        </div>
+        <div id="left-col">
+            <?php require_once('template/left-column.phtml') ?>
+            <!-- end of left column -->
+        </div>
+            <div id="right-col">
+                <?php require_once('template/right-column.phtml') ?>
+        </div>
+            <!-- end of right column -->
+    </div>
+
+<script>
+    function sendMessage() {
+        let text = document.getElementById("message_text").value;
+        document.getElementById("message_text").innerHTML = "";
+        document.getElementById("message_text").value = "";
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "../Controllers/sendMessage.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send("username=" + currentUser + "&message=" + text);
+        console.log("username=" + currentUser + "&message=" + text);
+        xhr.onload = function() {
+            console.log(this.responseText);
+        }
+    }
+</script>
+
+<?php require('template/footer.phtml') ?>

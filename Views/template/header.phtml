@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Jamie's Mobiles- <?php echo $view->pageTitle; ?></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Jamie's Mobiles">
+    <meta name="author" content="Jamie Ainsworth">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="/css/my-style.css" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
+
+</head>
+
+<body role="document">
+
+<div class="container">
+        <div  class="row">
+            <div id="title" class="col-xs-12">
+                <img src="/images/jamies-mobiles-logo.png" alt="Jamie's Mobiles" style="height: 100px;"/>
+                    <div class="pull-right" style="padding:0.5vh 0px 0.5vh 0px;"> <h1><?php echo $view->pageTitle ?> </h1></div>
+            </div>
+        </div>
+
+
+    <div class="row">
+        <div id="menu" class="col-xs-12">
+            <ul class="nav navbar_default nav-tabs">
+                <li><a href="index.php">Home</a></li>
+                <?php
+                    session_start();
+                    if (isset($_SESSION['username'])) {
+                        if (strpos($_SERVER['REQUEST_URI'], 'topics') !== false)
+                        {
+                            echo "<li><a href='newtopic.php?cid=".$_GET['cid']."&scid=".$_GET['scid']."'>Add New topic</a></li>";
+                        }
+                    }
+                    else
+                    {
+                        echo "";
+                    }
+                    if (strpos($_SERVER['REQUEST_URI'], 'readtopic') !== false)
+                    {
+                        echo "<li><a href='topics.php?cid=" . $_GET['cid'] . "&scid=" . $_GET['scid'] . "'>View Topics</a></li>";
+                    }
+                    else
+                    {
+                        echo "";
+                    }
+
+                    if (isset($_SESSION['username'])) {
+                        if (strpos($_SERVER['REQUEST_URI'], 'readtopic') !== false)
+                        {
+                            echo "<li><a>";
+                            echo "<form action='controllers/subscribe.php?tid=". $_GET['tid'] . "&uid=" . $_SESSION['uid'] . "' method='post'>";
+                            echo "<input style='background-color:rgb(0,0,0);' type='submit' name='sub' value='Subscribe / Unsubscribe'></form>";
+                            echo "</a></li>";
+                        }
+                    }
+                    else
+                    {
+                    echo "";
+                    }
+
+                    if(isset($_SESSION['username']))
+                    {
+                        echo "<li><a href='watchlist.php'>Watch List</a></li>";
+                        echo "<li><a href='messages.php'>Messages</a></li>";
+                        echo "<li><a href='search.php'>Search</a></li>";
+                        echo "<li><a href='controllers/logout.php'>Logout</a></li>";
+                    }
+                    else
+                    {
+                        echo "<li><a href='login.php'>Login</a></li>";
+                        echo "<li><a href='register.php'>Register</a></li>";
+                    }
+                ?>
+            </ul>
+       </div>
+    </div>
+
+    <div id="content" class="col-xs-12">
+
+
+

@@ -1,0 +1,13 @@
+<?php require('template/header.phtml') ?>
+
+<?php
+    include ('controllers/watchlist.php');
+    include ('controllers/db_connection.php');
+    // shows watchlist for the logged in user, displaying all the subscriptions they have for any topics they have subscribed to
+    $username = $_SESSION['username'];
+    $sql = mysqli_query($conn, "SELECT username FROM users WHERE (username = '$username')");
+    $result =mysqli_fetch_assoc($sql);
+    dispsubscriptions($result['username']);
+?>
+
+<?php require('template/footer.phtml') ?>

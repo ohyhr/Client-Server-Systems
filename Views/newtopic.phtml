@@ -1,0 +1,20 @@
+<?php require('template/header.phtml') ?>
+
+<?php
+if (isset($_SESSION['username'])) // if logged in
+{
+    // show form to add new topic
+    echo "<form action='controllers/addnewtopic.php?cid=".$_GET['cid']."&scid=".$_GET['scid']."' method='POST'>
+                <p>Title: </p>
+                <input type='text' id='topic' name='topic' size='100' />
+                <p>Content: </p>
+                <textarea id='content' name='content'></textarea><br />
+                <input type='submit' value='add new post' /><form>";
+}
+else // if not then show this
+{
+    echo "<p>Please login first or <a href='register.php'>click here</a> to register.</p>";
+}
+?>
+
+<?php require('template/footer.phtml') ?>

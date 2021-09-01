@@ -1,0 +1,17 @@
+<?php require('template/header.phtml') ?>
+
+
+<?php
+include ('controllers/topics.php');
+addview($_GET['cid'], $_GET['scid'], $_GET['tid']);
+disptopic($_GET['cid'], $_GET['scid'], $_GET['tid']); // display topic to user
+echo "<div class='content'><p>All Replies (".countReplies($_GET['cid'], $_GET['scid'], $_GET['tid']).")
+                  </p></div></br>";
+if (isset($_SESSION['username']))
+{
+    replytopost($_GET['cid'], $_GET['scid'], $_GET['tid']); // if logged in the show option to reply to post
+}
+dispreplies($_GET['cid'], $_GET['scid'], $_GET['tid']); // display replies to user
+?>
+
+<?php require('template/footer.phtml') ?>

@@ -1,0 +1,22 @@
+<?php require('template/header.phtml') ?>
+
+<?php
+    if (isset($_GET['status'])) {
+        if ($_GET['status'] == 'invalid') {
+            echo "<h1>Please enter a Email, Username and Password to register!</h1>";
+        }
+    }
+?>
+
+<form action='controllers/addnewuser.php' method='post'>
+    <p>Email:</p>
+    <input type='text' id='emailinput' name='emailinput' />
+    <p>Username:</p>
+    <input type='text' id='usernameinput' name='usernameinput' />
+    <p>Password:</p>
+    <input type='password' id='passwordinput' name='passwordinput' />
+    <input type='submit' value='Register'>
+</form>
+
+
+<?php require('template/footer.phtml') ?>

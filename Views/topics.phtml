@@ -1,0 +1,8 @@
+<?php require('template/header.phtml') ?>
+
+<?php
+include ('controllers/topics.php');
+disptopics($_GET['cid'], $_GET['scid']); // display topics to user
+?>
+
+<?php require('template/footer.phtml') ?>

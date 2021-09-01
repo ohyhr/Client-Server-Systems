@@ -1,0 +1,31 @@
+<?php require('template/header.phtml') ?>
+<script src="/js/script.js"></script>
+
+<?php
+    require_once ('Models/DB.php');
+    $db = new DB();
+    $data = $db->viewData();
+?>
+
+<!-- Search Box. -->
+<h1 style="color: black; text-align: center">Live Search</h1>
+
+<form action="search.php" method="POST" style="text-align: center; margin-bottom: 1em;">
+    <input type="search" name="content" placeholder="Search Here..." id="searchBox" oninput=search(this.value)>
+</form>
+
+<ul id="dataViewer" style="list-style: none; margin: auto; width: 80%">
+    <?php
+    $acc = 0;
+
+    foreach($data as $i) {
+        echo $acc % 2 == 0 ? "<li style='background-color: white; height: 5em; color: black; margin-bottom: 0.5em'>" : "<li style='background-color: floralwhite; height: 5em; color: black; margin-bottom: 0.5em'>";
+        echo $i["content"];
+        echo "</li>";
+        $acc = $acc + 1;
+    }
+    ?>
+</ul>
+
+
+<?php require('template/footer.phtml') ?>
